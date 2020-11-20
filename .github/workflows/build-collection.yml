@@ -1,0 +1,57 @@
+name: Build logo collection
+
+on:
+  # Build on pushes to main if the orgnames file changes in the commit
+  push:
+    branches: [ main ]
+    paths:
+      - 'orgnames'
+
+  # Allows you to trigger a build manually through the Actions tab
+  workflow_dispatch:
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download logos
+        run: ./get_logos.sh
+      
+      - name: Generate tag name
+        id: tagname
+        run: echo "::set-output name=tagname::$(date -u +"%Y-%m-%dT%H%M%SZ")"
+      
+      - name: Create a release
+        id: create-release
+        uses: actions/create-release@v1
+        with:
+          tag_name: release-${{ steps.tagname.outputs.tagname }}
+          release_name: Release ${{ steps.tagname.outputs.tagname }}
+          body: Based on ${{ github.sha }}
+      
+      - name: Create archives of logos
+        run: |
+          zip -r logos.zip logos
+          tar czvf logos.tar.gz logos
+
+      - name: Upload logos.zip as release artifact
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./logos.zip
+          asset_name: logos.zip
+          asset_content_type: application/zip
+      
+      - name: Upload logos.tar.gz as release artifact
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./logos.tar.gz
+          asset_name: logos.tar.gz
+          asset_content_type: application/x-gtar
