@@ -14,3 +14,7 @@ but we'll have logo filenames that are consistent when we put them altogether.
 The easiest way of combining these into a collection of logos is to open in a file browser, like `Finder`,
 turn off displaing extensions and grabbing a screenshot. Contributions of automatically generating such
 a collection are welcome. Bonus points if someone wants to do it automatically in CI. :-)
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/744411/99879440-ffd5d200-2bda-11eb-990d-7ac17957cb4f.png">
+</p>
