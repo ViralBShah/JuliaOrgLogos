@@ -6,6 +6,8 @@ on:
     branches: [ main ]
     paths:
       - 'orgnames'
+      - 'logos/*'
+      - '.github/workflows/build-collection.yml'
 
   # Allows you to trigger a build manually through the Actions tab
   workflow_dispatch:
@@ -23,6 +25,23 @@ jobs:
       - name: Download logos
         run: ./get_logos.sh
       
+      - name: Commit & push changes if there are any
+        run: |
+          # Check if there is nothing to commit (i.e. no logos are missing from logos/)
+          if [[ -z $(git status --porcelain) ]]; then
+              echo "logos directory is up-to-date already"
+              exit 0
+          fi
+
+          # Configure git
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+          # Commit the changes
+          git add .
+          git commit -m "[CI] Update logos"
+          git push
+
       - name: Generate tag name
         id: tagname
         run: echo "::set-output name=tagname::$(date -u +"%Y-%m-%dT%H%M%SZ")"
