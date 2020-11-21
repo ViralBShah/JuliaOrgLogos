@@ -5,7 +5,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'orgnames'
+      - 'orgnames.txt'
       - 'logos/*'
       - '.github/workflows/build-collection.yml'
 

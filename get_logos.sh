@@ -4,7 +4,7 @@ rm -fr logos
 mkdir -p logos
 GH_USER=`cat github_user`
 GH_TOKEN=`cat github_token`
-for o in `cat orgnames`; do
+for o in `cat orgnames.txt`; do
     echo "Downloading $o.png";
     # During CI runs, use a GitHub App token rather than a Personal Access Token
     if [[ $CI = "true" ]]; then
