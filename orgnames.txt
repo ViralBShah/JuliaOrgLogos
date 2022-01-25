@@ -126,3 +126,4 @@ StanJulia
 StatisticalRethinkingJulia
 TuringLang
 Gridap
+JuliaChemicalReactions
